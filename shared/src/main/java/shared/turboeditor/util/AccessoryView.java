@@ -54,7 +54,7 @@ public class AccessoryView extends LinearLayout {
     }
 
     private void init() {
-        setOrientation(HORIZONTAL);
+        setOrientation(VERTICAL);
         createView();
     }
 
@@ -72,21 +72,38 @@ public class AccessoryView extends LinearLayout {
         getContext().getTheme().resolveAttribute(R.attr.selectableItemBackgroundBorderless, outValue, true);
 
         String[] characters = {
-                "<", ">", "!", "/", ".", ";", "=", "\"", "{", "}", "[", "]", "(", ")", "&", "|", "#", "*", "+", "-", ":", "%", ",", "_", "@", "?", "^", "'",
+                ";", "=",
+                "0","1","2","3","4","5","6","7","8","9","{", "}", "[", "]", "(", ")",
+                "<", ">", "+", "-","!", "/", ".",  "\"",
+                "&", "|", "#", "*",  ":", "%", ",", "_", "@", "?", "^", "'",
         };
+        LinearLayout pll=this;
+        int delta=20;
+        int lines=characters.length/delta+1;
+        for (int i = 0; i < lines; i++) {
+            LinearLayout ll=new LinearLayout(this.getContext());
+            int start=i*delta;
+            int end=(i+1)*delta;
+            if(end>characters.length){
+                end=characters.length;
+            }
+            for(int j=start;j<end;j++) {
+                addAButton(characters[j],ll);
+            }
 
-        for (int i = 0; i < characters.length; i++)
-                addAButton(characters[i]);
+            pll.addView(ll);
+        }
 
-        updateTextColors();
+        //updateTextColors();
     }
 
-    private void addAButton(final String text) {
-        int dimension = (int) PixelDipConverter.convertDpToPixel(50, getContext());
+    private void addAButton(final String text,LinearLayout ll) {
+        int dimension = (int) PixelDipConverter.convertDpToPixel(20, getContext());
+        int height = (int) PixelDipConverter.convertDpToPixel(40, getContext());
         //int padding = (int) PixelDipConverter.convertDpToPixel(10, getContext());
-        final Button name = new Button(getContext());
+        final Button name = new Button(ll.getContext());
 
-        name.setLayoutParams(new LinearLayout.LayoutParams(dimension, dimension));
+        name.setLayoutParams(new LinearLayout.LayoutParams(dimension, height));
 
 
         name.setGravity(Gravity.CENTER);
@@ -98,6 +115,7 @@ public class AccessoryView extends LinearLayout {
         //name.setPadding(padding, padding, padding, padding);
 
         name.setClickable(true);
+        name.setTextColor(getResources().getColor(android.R.color.white));
 
         name.setOnClickListener(new OnClickListener() {
             @Override
@@ -107,13 +125,17 @@ public class AccessoryView extends LinearLayout {
         });
 
         name.setBackgroundResource(outValue.resourceId);
-        addView(name);
+        ll.addView(name);
     }
 
     public void updateTextColors() {
         boolean isLightTheme = PreferenceHelper.getLightTheme(getContext());
         for (int i = 0; i < getChildCount(); i++) {
-            ((Button) getChildAt(i)).setTextColor(isLightTheme ? getResources().getColor(android.R.color.background_dark) : getResources().getColor(android.R.color.white));
+            LinearLayout ll=(LinearLayout)getChildAt(i);
+            for(int j=0;j<ll.getChildCount();i++) {
+
+                ((Button) ll.getChildAt(j)).setTextColor(isLightTheme ? getResources().getColor(android.R.color.background_dark) : getResources().getColor(android.R.color.white));
+            }
         }
     }
 

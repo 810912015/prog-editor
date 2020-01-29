@@ -101,21 +101,13 @@
                 android:layout_marginRight="100dp"
                 android:layout_marginBottom="66dp"
                 android:visibility="invisible" />
-
-
-            <HorizontalScrollView
-                android:id="@+id/parent_accessory_view"
+            <shared.turboeditor.util.AccessoryView
+                android:id="@+id/accessoryView"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_gravity="bottom"
-                android:fillViewport="false"
-                android:scrollbars="horizontal">
+                android:layout_height="80dp"
+                android:layout_gravity="bottom">
+            </shared.turboeditor.util.AccessoryView>
 
-                <shared.turboeditor.util.AccessoryView
-                    android:id="@+id/accessoryView"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"></shared.turboeditor.util.AccessoryView>
-            </HorizontalScrollView>
         </FrameLayout>
     </LinearLayout>
 

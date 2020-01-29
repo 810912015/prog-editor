@@ -101,7 +101,11 @@ import shared.turboeditor.views.DialogHelper
 import shared.turboeditor.views.GoodScrollView
 import java.nio.charset.Charset
 
-abstract class MainActivity : AppCompatActivity(), IHomeActivity, FindTextDialog.SearchDialogInterface, GoodScrollView.ScrollInterface, PageSystem.PageSystemInterface, PageSystemButtons.PageButtonsInterface, NumberPickerDialog.INumberPickerDialog, SaveFileDialog.ISaveDialog, AdapterView.OnItemClickListener, AdapterDrawer.Callbacks, AccessoryView.IAccessoryView, EditTextDialog.EditDialogListener {
+abstract class MainActivity : AppCompatActivity(), IHomeActivity, FindTextDialog.SearchDialogInterface,
+        GoodScrollView.ScrollInterface, PageSystem.PageSystemInterface,
+        PageSystemButtons.PageButtonsInterface, NumberPickerDialog.INumberPickerDialog,
+        SaveFileDialog.ISaveDialog, AdapterView.OnItemClickListener, AdapterDrawer.Callbacks,
+        AccessoryView.IAccessoryView, EditTextDialog.EditDialogListener {
     private val updateHandler = Handler()
     private val colorRunnable_duringEditing = Runnable { mEditor!!.replaceTextKeepCursor(null) }
     private val colorRunnable_duringScroll = Runnable { mEditor!!.replaceTextKeepCursor(null) }
@@ -681,8 +685,8 @@ abstract class MainActivity : AppCompatActivity(), IHomeActivity, FindTextDialog
         val accessoryView = findViewById<AccessoryView>(R.id.accessoryView)
         accessoryView.setInterface(this)
 
-        val parentAccessoryView = findViewById<HorizontalScrollView>(R.id.parent_accessory_view)
-        ViewUtils.setVisible(parentAccessoryView, PreferenceHelper.getUseAccessoryView(this))
+//        val parentAccessoryView = findViewById<HorizontalScrollView>(R.id.parent_accessory_view)
+//        ViewUtils.setVisible(parentAccessoryView, PreferenceHelper.getUseAccessoryView(this))
 
 
         if (PreferenceHelper.getWrapContent(this)) {
@@ -975,8 +979,8 @@ abstract class MainActivity : AppCompatActivity(), IHomeActivity, FindTextDialog
             mEditor!!.updatePadding()
             mEditor!!.textSize = PreferenceHelper.getFontSize(this).toFloat()
         } else if (types.contains(PreferenceChangeType.ACCESSORY_VIEW)) {
-            val parentAccessoryView = findViewById<HorizontalScrollView>(R.id.parent_accessory_view)
-            ViewUtils.setVisible(parentAccessoryView, PreferenceHelper.getUseAccessoryView(this))
+//            val parentAccessoryView = findViewById<HorizontalScrollView>(R.id.parent_accessory_view)
+//            ViewUtils.setVisible(parentAccessoryView, PreferenceHelper.getUseAccessoryView(this))
             mEditor!!.updatePadding()
         } else if (types.contains(PreferenceChangeType.ENCODING)) {
             val oldEncoding: String = viewModel!!.currentEncoding!!
