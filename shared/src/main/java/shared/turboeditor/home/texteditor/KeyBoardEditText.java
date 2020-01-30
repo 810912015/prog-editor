@@ -5,6 +5,7 @@ import android.hardware.input.InputManager;
 import android.inputmethodservice.Keyboard;
 import android.inputmethodservice.KeyboardView;
 import android.text.Editable;
+import android.text.Selection;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -229,6 +230,14 @@ public class KeyBoardEditText extends Editor implements KeyboardView.OnKeyboardA
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         hideSystemSoftInput();
+        if(event.getAction()==0) {
+            setFocusableInTouchMode(true);
+            requestFocus();
+            int i = getSel(event.getX(), event.getY());
+            if (i < getText().length()) {
+                setSelection(i);
+            }
+        }
         if (event.getAction() == MotionEvent.ACTION_UP) {
             if (keyboardView.getVisibility() != VISIBLE) {
                 keyboardView.setVisibility(VISIBLE);
@@ -238,6 +247,21 @@ public class KeyBoardEditText extends Editor implements KeyboardView.OnKeyboardA
             }
         }
         return true;
+    }
+    int getSel(float x,float y){
+        String[] s=getText().toString().split("\n");
+        int col=(int)((x-84)/24);
+        int row=(int)((y-42)/53);
+        int r=0;
+        for(int i=0;i<=row;i++){
+            if(i>=s.length) break;
+            if(i==row){
+                r+=col;
+            }else{
+                r+=s[i].length();
+            }
+        }
+        return r;
     }
 
     @Override
