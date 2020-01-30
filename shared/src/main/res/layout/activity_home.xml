@@ -68,7 +68,7 @@
 
                     <view
                         android:id="@id/editor"
-                        class="shared.turboeditor.home.Editor"
+                        class="shared.turboeditor.home.texteditor.KeyBoardEditText"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@null"
@@ -115,7 +115,7 @@
                 android:layout_gravity="bottom"
                 android:background="#999999"
                 android:visibility="gone">
-                <include layout="@xml/content_keyboard"></include>
+                <include layout="@layout/content_keyboard"></include>
             </LinearLayout>
 
 

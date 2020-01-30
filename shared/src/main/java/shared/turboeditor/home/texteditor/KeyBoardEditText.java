@@ -20,12 +20,13 @@ import java.util.Arrays;
 import java.util.List;
 
 import shared.turboeditor.R;
+import shared.turboeditor.home.Editor;
 
 /**
  * Created by zd on 2018/4/2.
  */
 
-public class KeyBoardEditText extends AppCompatEditText implements KeyboardView.OnKeyboardActionListener {
+public class KeyBoardEditText extends Editor implements KeyboardView.OnKeyboardActionListener {
 
     /**数字键盘*/
     private Keyboard keyboardNumber;
@@ -44,25 +45,18 @@ public class KeyBoardEditText extends AppCompatEditText implements KeyboardView.
     private List<Integer> noLists = new ArrayList<>();
     private OnKeyboardStateChangeListener listener;
 
-    public KeyBoardEditText(Context context) {
-        super(context);
-        initEditView();
-    }
+
 
     public KeyBoardEditText(Context context, AttributeSet attrs) {
         super(context, attrs);
         initEditView();
     }
 
-    public KeyBoardEditText(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-        initEditView();
-    }
+
 
     /**初始化数字和字母键盘*/
     private void initEditView() {
-        keyboardNumber = new Keyboard(getContext(), R.xml.keyboard_num);
-        keyboardLetter = new Keyboard(getContext(), R.xml.keyboard_letter);
+        keyboardNumber = new Keyboard(getContext(), R.layout.keyboard_num);
 
         for (int i=0; i<arrays.length; i++) {
             noLists.add(arrays[i]);

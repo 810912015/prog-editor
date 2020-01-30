@@ -78,14 +78,10 @@ import shared.turboeditor.dialogfragment.FindTextDialog
 import shared.turboeditor.dialogfragment.NewFileDetailsDialog
 import shared.turboeditor.dialogfragment.NumberPickerDialog
 import shared.turboeditor.dialogfragment.SaveFileDialog
+import shared.turboeditor.home.texteditor.*
 import shared.turboeditor.preferences.PreferenceChangeType
 import shared.turboeditor.preferences.PreferenceHelper
-import shared.turboeditor.home.texteditor.LineUtils
-import shared.turboeditor.home.texteditor.PageSystem
-import shared.turboeditor.home.texteditor.PageSystemButtons
-import shared.turboeditor.home.texteditor.SearchResult
 import shared.turboeditor.util.AccessStorageApi
-import shared.turboeditor.util.AccessoryView
 import shared.turboeditor.util.AnimationUtils
 import shared.turboeditor.util.AppInfoHelper
 import shared.turboeditor.util.Device
@@ -104,7 +100,7 @@ abstract class MainActivity : AppCompatActivity(), IHomeActivity, FindTextDialog
         GoodScrollView.ScrollInterface, PageSystem.PageSystemInterface,
         PageSystemButtons.PageButtonsInterface, NumberPickerDialog.INumberPickerDialog,
         SaveFileDialog.ISaveDialog, AdapterView.OnItemClickListener, AdapterDrawer.Callbacks,
-        AccessoryView.IAccessoryView, EditTextDialog.EditDialogListener {
+         EditTextDialog.EditDialogListener {
     private val updateHandler = Handler()
     private val colorRunnable_duringEditing = Runnable { mEditor!!.replaceTextKeepCursor(null) }
     private val colorRunnable_duringScroll = Runnable { mEditor!!.replaceTextKeepCursor(null) }
@@ -119,7 +115,7 @@ abstract class MainActivity : AppCompatActivity(), IHomeActivity, FindTextDialog
      * The Drawer Layout
      */
     private var mDrawerLayout: CustomDrawerLayout? = null
-    private var mEditor: Editor? = null
+    private var mEditor: KeyBoardEditText? = null
     private var layout: LinearLayout? = null
     private var horizontalScroll: HorizontalScrollView? = null
     private var pageSystemButtons: PageSystemButtons? = null
@@ -163,7 +159,7 @@ abstract class MainActivity : AppCompatActivity(), IHomeActivity, FindTextDialog
 
         keyboardView=findViewById(R.id.view_keyboard);
         layout=findViewById(R.id.layout_main)
-        mEditor!!.setKeyboardType(layout,keyboardView,true)
+        mEditor!!.setKeyboardType(layout,keyboardView,true);
 
         /* First Time we open this activity */
         if (savedInstanceState == null) {
@@ -687,11 +683,6 @@ abstract class MainActivity : AppCompatActivity(), IHomeActivity, FindTextDialog
         verticalScroll = findViewById(R.id.vertical_scroll)
         horizontalScroll = findViewById(R.id.horizontal_scroll)
         mEditor = findViewById(R.id.editor)
-
-        val accessoryView = findViewById<AccessoryView>(R.id.accessoryView)
-        accessoryView.visibility=View.INVISIBLE
-        accessoryView.setInterface(this)
-
         if (PreferenceHelper.getWrapContent(this)) {
             horizontalScroll!!.removeView(mEditor)
             verticalScroll.removeView(horizontalScroll)
@@ -707,8 +698,6 @@ abstract class MainActivity : AppCompatActivity(), IHomeActivity, FindTextDialog
                 findViewById(R.id.fabNext))
 
         mEditor!!.setupEditor()
-
-        mEditor!!.v=accessoryView;
     }
 
     private fun showTextEditor() {
@@ -795,7 +784,6 @@ abstract class MainActivity : AppCompatActivity(), IHomeActivity, FindTextDialog
 
         // Hide the KeyBoard
         inputManager.hideSoftInputFromWindow(windowToken, hideType)
-        findViewById<AccessoryView>(R.id.accessoryView).visibility=View.INVISIBLE;
     }
 
     fun updateTextSyntax() {
@@ -927,8 +915,7 @@ abstract class MainActivity : AppCompatActivity(), IHomeActivity, FindTextDialog
 
         if (types.contains(PreferenceChangeType.THEME_CHANGE)) {
             ThemeUtils.setWindowsBackground(this)
-            val accessoryView = findViewById<AccessoryView>(R.id.accessoryView)
-            accessoryView.updateTextColors()
+
         }
 
         if (types.contains(PreferenceChangeType.WRAP_CONTENT)) {
@@ -984,11 +971,7 @@ abstract class MainActivity : AppCompatActivity(), IHomeActivity, FindTextDialog
         } else if (types.contains(PreferenceChangeType.FONT_SIZE)) {
             mEditor!!.updatePadding()
             mEditor!!.textSize = PreferenceHelper.getFontSize(this).toFloat()
-        } else if (types.contains(PreferenceChangeType.ACCESSORY_VIEW)) {
-//            val parentAccessoryView = findViewById<HorizontalScrollView>(R.id.parent_accessory_view)
-//            ViewUtils.setVisible(parentAccessoryView, PreferenceHelper.getUseAccessoryView(this))
-            mEditor!!.updatePadding()
-        } else if (types.contains(PreferenceChangeType.ENCODING)) {
+        }  else if (types.contains(PreferenceChangeType.ENCODING)) {
             val oldEncoding: String = viewModel!!.currentEncoding!!
             val newEncoding: String = PreferenceHelper.getEncoding(this)
             try {
@@ -1214,9 +1197,7 @@ abstract class MainActivity : AppCompatActivity(), IHomeActivity, FindTextDialog
             cannotOpenFile()
     }
 
-    override fun onButtonAccessoryViewClicked(text: String) {
-        mEditor!!.text!!.insert(mEditor!!.selectionStart, text)
-    }
+
 
     override fun onEdittextDialogEnded(result: String, hint: String, action: EditTextDialog.Actions) {
 

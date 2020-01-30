@@ -8,7 +8,7 @@
     android:focusableInTouchMode="true"
     android:keyBackground="@color/window_background_light"
     android:keyPreviewHeight="64dip"
-    android:keyPreviewLayout="@xml/view_keyboard_preview"
+    android:keyPreviewLayout="@layout/view_keyboard_preview"
     android:keyTextColor="@android:color/black"
     android:keyTextSize="24sp"
     android:labelTextSize="18sp"
