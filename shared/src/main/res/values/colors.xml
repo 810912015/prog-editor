@@ -22,6 +22,7 @@
 
 
 
+
     <color name="window_background">#212121</color> <!--ffffff-->
     <color name="window_background_light">#ffffff</color> <!--ffffff-->
     <color name="textColor">#ffffffff</color> <!-- ff191919 -->

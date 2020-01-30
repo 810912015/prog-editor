@@ -17,6 +17,7 @@ import android.text.style.ForegroundColorSpan;
 import android.text.style.UnderlineSpan;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
+import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 import androidx.annotation.NonNull;
@@ -28,10 +29,11 @@ import java.util.regex.Matcher;
 
 import shared.turboeditor.R;
 import shared.turboeditor.home.texteditor.EditTextPadding;
+import shared.turboeditor.home.texteditor.KeyBoardEditText;
 import shared.turboeditor.home.texteditor.LineUtils;
 import shared.turboeditor.preferences.PreferenceHelper;
 
-public class Editor extends AppCompatEditText {
+public class Editor extends KeyBoardEditText {
 
     private static final int ID_SELECT_ALL = android.R.id.selectAll;
     private static final int ID_CUT = android.R.id.cut;
@@ -119,13 +121,15 @@ public class Editor extends AppCompatEditText {
         } else {
             setReadOnly(false);
             if (PreferenceHelper.getSuggestionActive(getContext())) {
-                setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE
+                setInputType(InputType.TYPE_CLASS_TEXT
+                        | InputType.TYPE_TEXT_FLAG_MULTI_LINE
                         | InputType.TYPE_TEXT_FLAG_IME_MULTI_LINE);
             } else {
-                setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE
-                        | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS | InputType
-                        .TYPE_TEXT_VARIATION_VISIBLE_PASSWORD | InputType
-                        .TYPE_TEXT_FLAG_IME_MULTI_LINE);
+                setInputType(InputType.TYPE_CLASS_TEXT
+                        | InputType.TYPE_TEXT_FLAG_MULTI_LINE
+                        | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS
+                        | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+                        | InputType.TYPE_TEXT_FLAG_IME_MULTI_LINE);
             }
         }
 
@@ -137,29 +141,36 @@ public class Editor extends AppCompatEditText {
         setTextSize(PreferenceHelper.getFontSize(getContext()));
 
         setFocusable(true);
-        setOnClickListener(v -> {
-            if (!PreferenceHelper.getReadOnly(getContext())) {
-                MainActivity.verticalScroll.tempDisableListener(1000);
-                ((InputMethodManager) getContext().getSystemService(Context
-                        .INPUT_METHOD_SERVICE))
-                        .showSoftInput(Editor.this, InputMethodManager.SHOW_IMPLICIT);
-            }
-
-        });
-        setOnFocusChangeListener((v, hasFocus) -> {
-            if (hasFocus && !PreferenceHelper.getReadOnly(getContext())) {
-                MainActivity.verticalScroll.tempDisableListener(1000);
-                ((InputMethodManager) getContext().getSystemService(Context
-                        .INPUT_METHOD_SERVICE))
-                        .showSoftInput(Editor.this, InputMethodManager.SHOW_IMPLICIT);
-            }
-        });
+//        setOnClickListener(v -> {
+//            if (!PreferenceHelper.getReadOnly(getContext())) {
+//                MainActivity.verticalScroll.tempDisableListener(1000);
+//                ((InputMethodManager) getContext().getSystemService(Context
+//                        .INPUT_METHOD_SERVICE))
+//                        .showSoftInput(Editor.this, InputMethodManager.SHOW_IMPLICIT);
+//                //show();
+//            }
+//
+//        });
+//        setOnFocusChangeListener((v, hasFocus) -> {
+//            if (hasFocus && !PreferenceHelper.getReadOnly(getContext())) {
+//                MainActivity.verticalScroll.tempDisableListener(1000);
+//                ((InputMethodManager) getContext().getSystemService(Context
+//                        .INPUT_METHOD_SERVICE))
+//                        .showSoftInput(Editor.this, InputMethodManager.SHOW_IMPLICIT);
+//                //show();
+//            }
+//        });
 
         setMaxHistorySize(30);
 
         resetVariables();
     }
-
+    private void show(){
+        if(v!=null){
+            v.setVisibility(VISIBLE);
+        }
+    }
+   public View v;
     public void setReadOnly(boolean value) {
         if (value) {
             keyListener = getKeyListener();
@@ -242,7 +253,7 @@ public class Editor extends AppCompatEditText {
 
     @Override
     public boolean onKeyDown(int keyCode, @NonNull KeyEvent event) {
-
+        super.onKeyDown(keyCode,event);
         if (event.isCtrlPressed()) {
             switch (keyCode) {
                 case KeyEvent.KEYCODE_A:

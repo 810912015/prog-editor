@@ -28,7 +28,9 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.graphics.Typeface
+import android.inputmethodservice.KeyboardView
 import android.net.Uri
+import android.opengl.Visibility
 import android.os.Bundle
 import android.os.Handler
 import android.preference.PreferenceManager
@@ -50,10 +52,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.AdapterView
-import android.widget.HorizontalScrollView
-import android.widget.ListView
-import android.widget.Toast
+import android.widget.*
 import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.demo_changelog_fragment_dialogstandard.*
 
@@ -121,6 +120,7 @@ abstract class MainActivity : AppCompatActivity(), IHomeActivity, FindTextDialog
      */
     private var mDrawerLayout: CustomDrawerLayout? = null
     private var mEditor: Editor? = null
+    private var layout: LinearLayout? = null
     private var horizontalScroll: HorizontalScrollView? = null
     private var pageSystemButtons: PageSystemButtons? = null
     private var toolbar: Toolbar? = null
@@ -135,6 +135,7 @@ abstract class MainActivity : AppCompatActivity(), IHomeActivity, FindTextDialog
     //endregion
 
     private var viewModel: MainViewModel? = null
+    private var keyboardView: KeyboardView? = null;
 
     //region Activity facts
 
@@ -159,6 +160,11 @@ abstract class MainActivity : AppCompatActivity(), IHomeActivity, FindTextDialog
         // reset text editor
         setupTextEditor()
         hideTextEditor()
+
+        keyboardView=findViewById(R.id.view_keyboard);
+        layout=findViewById(R.id.layout_main)
+        mEditor!!.setKeyboardType(layout,keyboardView,true)
+
         /* First Time we open this activity */
         if (savedInstanceState == null) {
             // Open
@@ -683,11 +689,8 @@ abstract class MainActivity : AppCompatActivity(), IHomeActivity, FindTextDialog
         mEditor = findViewById(R.id.editor)
 
         val accessoryView = findViewById<AccessoryView>(R.id.accessoryView)
+        accessoryView.visibility=View.INVISIBLE
         accessoryView.setInterface(this)
-
-//        val parentAccessoryView = findViewById<HorizontalScrollView>(R.id.parent_accessory_view)
-//        ViewUtils.setVisible(parentAccessoryView, PreferenceHelper.getUseAccessoryView(this))
-
 
         if (PreferenceHelper.getWrapContent(this)) {
             horizontalScroll!!.removeView(mEditor)
@@ -704,6 +707,8 @@ abstract class MainActivity : AppCompatActivity(), IHomeActivity, FindTextDialog
                 findViewById(R.id.fabNext))
 
         mEditor!!.setupEditor()
+
+        mEditor!!.v=accessoryView;
     }
 
     private fun showTextEditor() {
@@ -790,6 +795,7 @@ abstract class MainActivity : AppCompatActivity(), IHomeActivity, FindTextDialog
 
         // Hide the KeyBoard
         inputManager.hideSoftInputFromWindow(windowToken, hideType)
+        findViewById<AccessoryView>(R.id.accessoryView).visibility=View.INVISIBLE;
     }
 
     fun updateTextSyntax() {
