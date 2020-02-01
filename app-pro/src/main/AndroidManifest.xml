@@ -136,14 +136,6 @@
                 <data android:mimeType="*/*" />
             </intent-filter>
         </activity>
-        <service android:name="shared.turboeditor.home.texteditor.ProgInputMethodService"
-            android:permission="android.permission.BIND_INPUT_METHOD">
-            <intent-filter>
-                <action android:name="android.view.InputMethod"/>
-            </intent-filter>
-            <meta-data android:name="android.view.im"
-            android:resource="@xml/method"/>
-        </service>
         <meta-data
             android:name="com.sec.android.support.multiwindow"
             android:value="true" />

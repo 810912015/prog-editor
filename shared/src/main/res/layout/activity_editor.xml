@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+    <shared.turboeditor.views.GoodScrollView
+        android:id="@id/vertical_scroll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@null"
+        android:fillViewport="true"
+        android:scrollbars="vertical">
+        <HorizontalScrollView
+            android:id="@id/horizontal_scroll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:fillViewport="true"
+            android:scrollbars="horizontal">
+
+            <view
+                android:id="@id/editor"
+                class="shared.turboeditor.home.texteditor.KeyBoardEditText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:bufferType="spannable"
+                android:cursorVisible="true"
+                android:gravity="top|start"
+                android:singleLine="false"
+                android:text=""
+                android:textCursorDrawable="@null"
+                android:textIsSelectable="true" />
+        </HorizontalScrollView>
+    </shared.turboeditor.views.GoodScrollView>
+    <LinearLayout
+        android:id="@+id/layout_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="bottom"
+        android:background="#000000"
+        android:visibility="gone">
+        <include layout="@layout/content_keyboard"></include>
+    </LinearLayout>
+
+
+</FrameLayout>

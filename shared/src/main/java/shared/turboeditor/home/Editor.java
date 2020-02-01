@@ -146,7 +146,7 @@ public class Editor extends AppCompatEditText {
                     0);
         }
         // add a padding from bottom
-        MainActivity.verticalScroll.setPadding(0, 0, 0, EditTextPadding.getPaddingBottom(context));
+        EditorActivity.verticalScroll.setPadding(0, 0, 0, EditTextPadding.getPaddingBottom(context));
     }
 
     //region OVERRIDES
@@ -164,11 +164,10 @@ public class Editor extends AppCompatEditText {
     @Override
     public void onDraw(@NonNull final Canvas canvas) {
 
-        if (lineCount != getLineCount() || startingLine != MainActivity.Companion.getPageSystem().getStartingLine()) {
-            startingLine = MainActivity.Companion.getPageSystem().getStartingLine();
+        if (lineCount != getLineCount() || startingLine !=  EditorActivity.pageSystem.getStartingLine()) {
+            startingLine =EditorActivity.pageSystem.getStartingLine();
             lineCount = getLineCount();
-            lineUtils.updateHasNewLineArray(MainActivity.Companion.getPageSystem()
-                    .getStartingLine(), lineCount, getLayout(), getText().toString());
+            lineUtils.updateHasNewLineArray(0, lineCount, getLayout(), getText().toString());
 
             isGoodLineArray = lineUtils.getGoodLines();
             realLines = lineUtils.getRealLines();
@@ -221,9 +220,9 @@ public class Editor extends AppCompatEditText {
                     if (getCanRedo()) {
                         return onTextContextMenuItem(ID_REDO);
                     }
-                case KeyEvent.KEYCODE_S:
-                    getMainActivity().saveTheFile(false);
-                    return true;
+//                case KeyEvent.KEYCODE_S:
+//                    getMainActivity().saveTheFile(false);
+//                    return true;
                 default:
                     return super.onKeyDown(keyCode, event);
             }
@@ -453,8 +452,8 @@ public class Editor extends AppCompatEditText {
         editorHeight = getHeight();
 
         if (!newText && editorHeight > 0) {
-            firstVisibleIndex = getLayout().getLineStart(LineUtils.Companion.getFirstVisibleLine(MainActivity.verticalScroll, editorHeight, lineCount));
-            lastVisibleIndex = getLayout().getLineEnd(LineUtils.Companion.getLastVisibleLine(MainActivity.verticalScroll, editorHeight, lineCount, deviceHeight) - 1);
+            firstVisibleIndex = getLayout().getLineStart(LineUtils.Companion.getFirstVisibleLine(EditorActivity.verticalScroll, editorHeight, lineCount));
+            lastVisibleIndex = getLayout().getLineEnd(LineUtils.Companion.getLastVisibleLine(EditorActivity.verticalScroll, editorHeight, lineCount, deviceHeight) - 1);
         } else {
             firstVisibleIndex = 0;
             lastVisibleIndex = CHARS_TO_COLOR;
@@ -610,8 +609,8 @@ public class Editor extends AppCompatEditText {
         return mEditHistory.mmPosition != -1;
     }
 
-    private MainActivity getMainActivity() {
-        return (MainActivity) getContext();
+    private EditorActivity getMainActivity() {
+        return (EditorActivity) getContext();
     }
 
     /**

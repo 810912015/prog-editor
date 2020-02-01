@@ -230,6 +230,8 @@ public class KeyBoardEditText extends Editor implements KeyboardView.OnKeyboardA
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         hideSystemSoftInput();
+        viewGroup.setVisibility(VISIBLE);
+        keyboardView.setVisibility(VISIBLE);
         if(event.getAction()==0) {
             setFocusableInTouchMode(true);
             requestFocus();

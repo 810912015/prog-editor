@@ -19,13 +19,18 @@
 
 package com.maskyn.fileeditorpro;
 
+import android.os.Bundle;
+import android.os.PersistableBundle;
+
+import androidx.annotation.Nullable;
+
+import shared.turboeditor.home.EditorActivity;
 import shared.turboeditor.home.MainActivity;
 
-public class HomeActivity extends MainActivity {
+public class HomeActivity extends EditorActivity {
 
     @Override
     public boolean showInterstitial() {
-        // nothing to do here
         return false;
     }
 }
